@@ -1,3 +1,6 @@
+# Internal evaluator files — never push
+EVALUATOR_KEY.md
+
 __pycache__/
 *.py[cod]
 *.pth
