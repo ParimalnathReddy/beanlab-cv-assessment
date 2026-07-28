@@ -2,8 +2,12 @@
 Generate synthetic sample data for CV_Assessment.
 
 Creates:
-  data/ratings.csv              — 30 trays with tray_id, year, human_rating
+  data/ratings.csv              — 60 trays with tray_id, year, human_rating
   data/sample_beans/<tray>_results.csv — per-bean prob_bad scores per tray
+
+Rating distribution mirrors real BeanLab data:
+  1 (very bad) ~8%,  2 (bad) ~15%,  3 (average) ~27%,
+  4 (good) ~32%,  5 (excellent) ~18%
 
 No real bean images or proprietary data are used.
 Run once before using features.py or evaluate.py.
@@ -15,44 +19,51 @@ from pathlib import Path
 
 RNG = np.random.default_rng(42)
 
-OUT_DIR   = Path("data/sample_beans")
-RATE_CSV  = Path("data/ratings.csv")
+OUT_DIR  = Path("data/sample_beans")
+RATE_CSV = Path("data/ratings.csv")
 
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# ── Tray catalogue ────────────────────────────────────────────────────────────
-# 10 trays per year; 2025 has a slightly elevated prob_bad baseline
-# (simulating the real covariate shift we observe year-to-year)
+# Target rating distribution (matches approximate real-world proportions)
+# Each tray gets a latent quality tier that drives both prob_bad scores and rating
+TIER_CONFIG = [
+    # (tier, weight, beta_a, beta_b, rating_range)
+    ("very_bad",   0.08, 9, 2,  [1, 1, 2]),
+    ("bad",        0.15, 6, 3,  [2, 2, 3]),
+    ("average",    0.27, 3, 4,  [2, 3, 3, 4]),
+    ("good",       0.32, 2, 7,  [3, 4, 4, 5]),
+    ("excellent",  0.18, 1, 12, [4, 5, 5, 5]),
+]
 
 tray_records = []
-year_base_bad = {2023: 0.10, 2024: 0.12, 2025: 0.19}
 
-for year, base in year_base_bad.items():
-    for i in range(1, 11):
-        tray_id      = f"{year}_TRAY_{i:02d}"
-        n_beans      = int(RNG.integers(150, 320))
-        # Each tray has a latent "badness" level that drives both the
-        # prob_bad distribution and the human rating
-        latent       = RNG.beta(2, 8) + base           # 0..~0.6
-        latent       = float(np.clip(latent, 0.0, 1.0))
+years      = [2023, 2024, 2025]
+trays_each = 20   # 20 trays per year = 60 total
 
-        # Simulate a bimodal distribution: most beans are good,
-        # a fraction are defective
-        n_bad        = int(n_beans * latent * RNG.uniform(0.5, 1.5))
-        n_bad        = min(n_bad, n_beans)
-        n_good       = n_beans - n_bad
+for year in years:
+    for i in range(1, trays_each + 1):
+        tray_id = f"{year}_TRAY_{i:02d}"
+        n_beans = int(RNG.integers(160, 320))
 
-        prob_bad_good = RNG.beta(1.5, 12, size=n_good)          # low scores
-        prob_bad_bad  = RNG.beta(5,   2,  size=n_bad)           # high scores
-        prob_bad      = np.concatenate([prob_bad_good, prob_bad_bad])
+        # Pick a quality tier for this tray
+        tier_weights = [t[1] for t in TIER_CONFIG]
+        tier_idx = RNG.choice(len(TIER_CONFIG), p=tier_weights / np.sum(tier_weights))
+        _, _, beta_a, beta_b, rating_pool = TIER_CONFIG[tier_idx]
+
+        # Generate bimodal prob_bad: most beans near tier baseline,
+        # a random fraction clearly defective
+        defect_frac  = RNG.beta(beta_a, beta_b)
+        n_defective  = int(n_beans * defect_frac)
+        n_good       = n_beans - n_defective
+
+        prob_bad_good = RNG.beta(1.2, 10,   size=max(n_good, 1))
+        prob_bad_bad  = RNG.beta(8,   1.5,  size=max(n_defective, 0))
+        prob_bad      = np.concatenate([prob_bad_good, prob_bad_bad[:n_defective]])
         RNG.shuffle(prob_bad)
         prob_bad      = np.clip(prob_bad, 0.0, 1.0)
 
-        # Human rating: strongly driven by the 95th-percentile bean score,
-        # not the mean — this is intentional (see features.py)
-        p95      = float(np.percentile(prob_bad, 95))
-        raw_r    = 1.0 + 4.0 * p95 + RNG.normal(0, 0.4)
-        rating   = int(np.clip(round(raw_r), 1, 5))
+        # Human rating: drawn from tier's rating pool with small noise
+        rating = int(RNG.choice(rating_pool))
 
         tray_records.append({
             "tray_id":      tray_id,
@@ -60,9 +71,8 @@ for year, base in year_base_bad.items():
             "human_rating": rating,
         })
 
-        # Save per-bean CSV
         bean_df = pd.DataFrame({
-            "bean_id":  np.arange(n_beans),
+            "bean_id":  np.arange(len(prob_bad)),
             "prob_bad": np.round(prob_bad, 6),
         })
         bean_df.to_csv(OUT_DIR / f"{tray_id}_results.csv", index=False)
@@ -70,8 +80,15 @@ for year, base in year_base_bad.items():
 ratings_df = pd.DataFrame(tray_records)
 ratings_df.to_csv(RATE_CSV, index=False)
 
-print(f"Generated {len(tray_records)} trays:")
-print(f"  Per-bean CSVs  → {OUT_DIR}/")
-print(f"  Ratings table  → {RATE_CSV}")
+print(f"Generated {len(tray_records)} trays ({trays_each} per year × {len(years)} years)")
+print(f"  Per-bean CSVs → {OUT_DIR}/")
+print(f"  Ratings table → {RATE_CSV}")
 print()
-print(ratings_df.groupby("year")["human_rating"].describe().round(2))
+print("Rating distribution:")
+print(ratings_df["human_rating"].value_counts().sort_index()
+      .rename("count").to_frame()
+      .assign(pct=lambda d: (d["count"] / len(ratings_df) * 100).round(1)))
+print()
+print("Per-year breakdown:")
+print(ratings_df.groupby("year")["human_rating"]
+      .describe()[["count","mean","std","min","max"]].round(2))
