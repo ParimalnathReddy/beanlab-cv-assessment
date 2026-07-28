@@ -1,7 +1,7 @@
 # BeanLab CV Assessment — A2025-03
 
-**Take-home technical assessment for a Computer Vision / ML researcher position.**  
-Estimated time: 3–4 hours. No time limit — quality of reasoning matters more than speed.
+**technical assessment**  
+No time limit — quality of reasoning matters.
 
 ---
 
@@ -77,8 +77,4 @@ python make_sample_data.py
 
 ## Submission
 
-Fork this repo, fill in `SOLUTION.md`, and email the fork URL to
-**beanlab-hiring@msu.edu** with subject line `A2025-03 · [Your Name]`.
-
-We will acknowledge receipt within 24 hours and schedule a 45-minute
-follow-up conversation within one week.
+Fork this repo, fill in `SOLUTION.md`, and send confirmation.

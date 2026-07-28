@@ -39,9 +39,10 @@
 
 ---
 
-## Q2 — Prioritisation Under Time Pressure
+## Q2 — Cross-Year Generalisation
 
-<!-- Which two issues do you fix first and why? Argue expected metric impact. -->
+<!-- Propose two concrete approaches to close the cross-year QWK gap (0.65 → target ≥ 0.49).
+     For each: what you'd implement, how you'd measure success, and main failure risk. -->
 
 
 ---

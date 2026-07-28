@@ -21,14 +21,32 @@ design decisions, not syntax — the code runs without errors.
 
 ---
 
-## Q2 — Prioritisation Under Time Pressure
+## Q2 — Cross-Year Generalisation
 
-You have **three working days** before a lab meeting where results will be
-shown to the PI. Which **two** issues do you fix first, and why?
+Suppose the pipeline is retrained with all the bugs from Q1 fixed.
+It now achieves **QWK = 0.65** when evaluated within a single growing season,
+but drops to **QWK = 0.45** when the model trained on 2023–2024 data is tested
+on the following year (2025). The human-human inter-rater QWK baseline is 0.49,
+so the model is currently *below* human agreement on new-year data.
 
-Defend your answer with an expected effect on the headline metric. Do not
-simply list the most obviously wrong issues — argue for the highest expected
-payoff per hour of engineering time.
+Additional context:
+- A year classifier trained on raw image statistics (mean hue, saturation,
+  brightness) achieves **AUC = 0.9993** — the three years are almost perfectly
+  separable from pixel statistics alone.
+- A Reinhard LAB colour transfer was applied to 2025 tray photos to match the
+  2023–2024 colour distribution. It moved the year-classifier AUC from 0.9993
+  to 0.9887 — essentially no improvement in downstream QWK.
+- The rater pool also changed between years (different field teams), introducing
+  possible label drift on top of image shift.
+
+**Propose two concrete approaches** you would investigate to close the
+cross-year QWK gap. For each approach:
+
+- Describe what you would implement (be specific enough that a labmate could
+  reproduce it)
+- State what metric or diagnostic you would use to know whether it worked
+- Identify the main risk or failure mode — what could make it not work or
+  make the results misleading
 
 ---
 
