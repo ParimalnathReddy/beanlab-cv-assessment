@@ -82,3 +82,16 @@
 
 ### Feature 3
 
+
+---
+
+## Q6 — Pipeline Reproducibility
+
+### Problem 1
+
+
+### Problem 2
+
+
+### Problem 3
+

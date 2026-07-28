@@ -89,3 +89,19 @@ For each feature:
 - Give the formula (in Python or plain math)
 - Explain what human-rater behaviour it is designed to capture
 - Under what conditions might this feature become unreliable or misleading?
+
+---
+
+## Q6 — Pipeline Reproducibility
+
+This pipeline will re-run every growing season as new data arrives.
+A new lab member six months from now needs to reproduce last year's
+results exactly — same split, same features, same model checkpoint.
+
+Reading the five files in `pipeline/` and `requirements.txt`, identify
+**three specific reproducibility or maintainability problems**.
+
+For each problem:
+- **(a)** File and line where the problem lives
+- **(b)** What concretely breaks when the pipeline runs again on new-year data
+- **(c)** A concrete fix — code or pseudocode is fine
