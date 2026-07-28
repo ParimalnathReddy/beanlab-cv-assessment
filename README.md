@@ -70,8 +70,8 @@ python make_sample_data.py
 3. Write your answers in `SOLUTION.md`.
 
 > **On AI tools:** You may use whatever tools you normally use.
-> We will ask follow-up questions about your reasoning in a live conversation.
-> Confidently wrong answers will surface immediately.
+> We will ask follow-up questions about your reasoning in a conversation.
+
 
 ---
 
