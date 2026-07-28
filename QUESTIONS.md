@@ -19,6 +19,13 @@ For each issue provide:
 There are between seven and nine issues total. Issues exist at the level of
 design decisions, not syntax — the code runs without errors.
 
+**After listing all issues**, answer this one additional question:
+
+> Issue 7 (missing `hue=` in `ColorJitter`) and Issue 8 (`BAD_THRESHOLD = 0.5`
+> hardcoded) interact with each other. Explain how fixing Issue 7 alone —
+> without fixing Issue 8 — can make the downstream tray-rating pipeline
+> *worse*, not better. Be specific about which direction the error shifts and why.
+
 ---
 
 ## Q2 — Diagnosing a Cross-Year Performance Drop
@@ -55,10 +62,15 @@ the labels, the beans themselves, or some combination.
 
 ## Q3 — Honest Evaluation Protocol
 
-The pipeline reports **5-fold CV QWK = 0.62** as its headline result.
+First, run the evaluation script from the repo root and paste the exact
+terminal output into your answer:
 
-Looking specifically at `evaluate.py`, explain why this number may be
-misleading for a multi-year field dataset. Then design an alternative
+```bash
+python3 pipeline/evaluate.py
+```
+
+Then, looking specifically at `evaluate.py`, explain why the reported QWK
+may be misleading for a multi-year field dataset. Design an alternative
 evaluation protocol that gives a more realistic estimate of deployment
 performance. Specify exactly what you would compute and what you would report.
 
@@ -105,3 +117,6 @@ For each problem:
 - **(a)** File and line where the problem lives
 - **(b)** What concretely breaks when the pipeline runs again on new-year data
 - **(c)** A concrete fix — code or pseudocode is fine
+
+For **Problem 1** only: implement the fix directly in the repo and paste
+the `git diff` output into your answer.

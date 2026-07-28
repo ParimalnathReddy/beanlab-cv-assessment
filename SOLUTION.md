@@ -37,6 +37,11 @@
 ### Issue 9 (if found)
 
 
+### Interaction — Issue 7 × Issue 8
+
+<!-- How does fixing hue augmentation alone make BAD_THRESHOLD worse? -->
+
+
 ---
 
 ## Q2 — Diagnosing a Cross-Year Performance Drop
@@ -57,8 +62,13 @@
 
 ## Q3 — Honest Evaluation Protocol
 
-<!-- Looking at evaluate.py: why is 5-fold CV QWK misleading? -->
-<!-- Design a better protocol and compare against human-human inter-rater baseline. -->
+### Terminal output of `python3 pipeline/evaluate.py`
+
+```
+(paste here)
+```
+
+### Analysis
 
 
 ---
@@ -89,6 +99,13 @@
 
 ### Problem 1
 
+<!-- Description -->
+
+### Problem 1 — git diff
+
+```diff
+(paste git diff here)
+```
 
 ### Problem 2
 
