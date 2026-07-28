@@ -15,7 +15,13 @@ and an XGBoost model predicts the human appearance rating on a **1–5 ordinal s
 Ground-truth labels are expert ratings collected across three growing seasons
 (2023, 2024, 2025) with different field teams and camera setups.
 
-![Pipeline example: original tray photo (left) → per-bean CNN scoring with ConvNeXt-Tiny (right). Red = Bad, Orange = Suspect, Tan = Good.](assets/pipeline_example.jpg)
+```
+Tray photo  →  Instance segmentation  →  Per-bean CNN scoring  →  Tray features  →  Rating (1–5)
+   (JPG)         (Watershed / SAM)        (ConvNeXt-Tiny)          (XGBoost)
+                       ↓                        ↓                       ↓
+                 ~200–300 bean            prob_bad ∈ [0,1]       mean_prob_bad
+                   crops per tray          per bean crop           n_beans  …
+```
 
 The codebase was written over several months by two ML engineers rotating in and out.
 It runs without crashing. The reported 5-fold CV QWK is 0.62. Your job is to determine
