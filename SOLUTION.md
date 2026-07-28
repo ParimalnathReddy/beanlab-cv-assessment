@@ -57,7 +57,8 @@
 
 ## Q3 — Honest Evaluation Protocol
 
-<!-- Why is the reported QWK misleading? Design a better protocol. -->
+<!-- Looking at evaluate.py: why is 5-fold CV QWK misleading? -->
+<!-- Design a better protocol and compare against human-human inter-rater baseline. -->
 
 
 ---

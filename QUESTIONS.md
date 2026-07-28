@@ -24,7 +24,7 @@ design decisions, not syntax — the code runs without errors.
 ## Q2 — Diagnosing a Cross-Year Performance Drop
 
 You have just joined the lab. The pipeline (assume all Q1 bugs are fixed)
-is trained on data from seasons A and B, then evaluated blind on season C —
+is trained on data from 2023 and 2024, then evaluated blind on 2025 —
 a new growing year with a different field team and a different camera.
 Performance drops significantly below the human inter-rater agreement baseline.
 
@@ -57,18 +57,21 @@ the labels, the beans themselves, or some combination.
 
 The pipeline reports **5-fold CV QWK = 0.62** as its headline result.
 
-Explain why this number may be misleading for a multi-year field dataset.
-Then design an alternative evaluation protocol that gives a more realistic
-estimate of deployment performance. Specify exactly what you would compute
-and what you would report.
+Looking specifically at `evaluate.py`, explain why this number may be
+misleading for a multi-year field dataset. Then design an alternative
+evaluation protocol that gives a more realistic estimate of deployment
+performance. Specify exactly what you would compute and what you would report.
+
+How does your proposed metric compare against the human-human inter-rater
+agreement as a baseline, and why does that comparison matter?
 
 ---
 
 ## Q4 — Segmentation Validation Without Ground Truth
 
 `segment_beans()` in `segment.py` produces instance counts used downstream.
-You suspect it under-counts touching bean pairs but have **no pixel-level
-annotation budget**.
+You need to validate that it produces reliable output before trusting it,
+but you have **no pixel-level annotation budget**.
 
 Propose a practical validation strategy:
 - What data would you collect?
@@ -85,5 +88,4 @@ additional features** you would add.
 For each feature:
 - Give the formula (in Python or plain math)
 - Explain what human-rater behaviour it is designed to capture
-- Identify whether it could become noisier or less stable under specific
-  conditions (class imbalance, CNN miscalibration, very small or large trays)
+- Under what conditions might this feature become unreliable or misleading?
