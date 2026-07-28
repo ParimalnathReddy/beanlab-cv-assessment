@@ -72,6 +72,18 @@ pip install -r requirements.txt
 python3 make_sample_data.py
 ```
 
+All commands below must be run from the **repo root** (`beanlab-cv-assessment/`).
+
+To run the two executable pipeline files on the synthetic data:
+
+```bash
+# Tray-level feature engineering
+python3 pipeline/features.py
+
+# Cross-validation evaluation
+python3 pipeline/evaluate.py
+```
+
 ---
 
 ## Your task
