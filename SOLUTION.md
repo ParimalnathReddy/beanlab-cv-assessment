@@ -39,10 +39,18 @@
 
 ---
 
-## Q2 — Cross-Year Generalisation
+## Q2 — Diagnosing a Cross-Year Performance Drop
 
-<!-- Propose two concrete approaches to close the cross-year QWK gap (0.65 → target ≥ 0.49).
-     For each: what you'd implement, how you'd measure success, and main failure risk. -->
+### Diagnosis — what would you measure first?
+
+
+### Recovery strategy 1 (root cause A)
+
+
+### Recovery strategy 2 (root cause B)
+
+
+### Risk — what could make each strategy misleading?
 
 
 ---

@@ -21,32 +21,35 @@ design decisions, not syntax — the code runs without errors.
 
 ---
 
-## Q2 — Cross-Year Generalisation
+## Q2 — Diagnosing a Cross-Year Performance Drop
 
-Suppose the pipeline is retrained with all the bugs from Q1 fixed.
-It now achieves **QWK = 0.65** when evaluated within a single growing season,
-but drops to **QWK = 0.45** when the model trained on 2023–2024 data is tested
-on the following year (2025). The human-human inter-rater QWK baseline is 0.49,
-so the model is currently *below* human agreement on new-year data.
+You have just joined the lab. The pipeline (assume all Q1 bugs are fixed)
+is trained on data from seasons A and B, then evaluated blind on season C —
+a new growing year with a different field team and a different camera.
+Performance drops significantly below the human inter-rater agreement baseline.
 
-Additional context:
-- A year classifier trained on raw image statistics (mean hue, saturation,
-  brightness) achieves **AUC = 0.9993** — the three years are almost perfectly
-  separable from pixel statistics alone.
-- A Reinhard LAB colour transfer was applied to 2025 tray photos to match the
-  2023–2024 colour distribution. It moved the year-classifier AUC from 0.9993
-  to 0.9887 — essentially no improvement in downstream QWK.
-- The rater pool also changed between years (different field teams), introducing
-  possible label drift on top of image shift.
+You have access to:
+- Tray photos from all three seasons
+- Per-bean CNN scores (`prob_bad`) for each tray
+- Human ratings for each tray
+- The trained model weights
 
-**Propose two concrete approaches** you would investigate to close the
-cross-year QWK gap. For each approach:
+You do **not** yet know *why* performance dropped. It could be the images,
+the labels, the beans themselves, or some combination.
 
-- Describe what you would implement (be specific enough that a labmate could
-  reproduce it)
-- State what metric or diagnostic you would use to know whether it worked
-- Identify the main risk or failure mode — what could make it not work or
-  make the results misleading
+**Describe your investigation and recovery plan:**
+
+1. **Diagnosis** — Before touching any code, what would you measure or
+   visualise to understand *where* the failure is coming from? Walk through
+   your reasoning step by step.
+
+2. **Experiment** — Based on what your diagnosis might reveal, propose
+   **two different recovery strategies** — one for each of the two most
+   plausible root causes you identified. For each: what you would implement,
+   and what result would tell you it worked.
+
+3. **Risk** — For each strategy, what is the main way it could produce
+   misleading results even if the numbers improve?
 
 ---
 
