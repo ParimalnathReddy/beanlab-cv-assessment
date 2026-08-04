@@ -95,6 +95,19 @@
 
 ---
 
+## Q7 — LLM-Assisted Lab Query System
+
+### Schema
+
+
+### Query pipeline
+
+
+### Risk
+
+
+---
+
 ## Q6 — Pipeline Reproducibility
 
 ### Problem 1

@@ -120,3 +120,60 @@ For each problem:
 
 For **Problem 1** only: implement the fix directly in the repo and paste
 the `git diff` output into your answer.
+
+---
+
+## Q7 — LLM-Assisted Lab Query System
+
+The lab accumulates data every growing season: tray photos, per-bean CNN
+scores, human ratings, segmentation outputs, and field notes written by the
+field team (free text, e.g. *"camera was misaligned on rows 3–5"*,
+*"new variety introduced mid-season"*).
+
+A researcher wants to query this data in plain English without writing SQL.
+Using the existing files in this repo (`data/ratings.csv` and
+`data/sample_beans/`) as your starting point:
+
+1. **Schema** — Design the database schema that would store all of the above
+   (tray metadata, per-bean scores, human ratings, field notes). Specify table
+   names, columns, and data types. Justify any indexing decisions.
+
+2. **Query pipeline** — Describe how you would build a system that takes a
+   plain-English question from a researcher and returns the correct rows.
+   For example:
+   - *"Which trays from 2024 had a human rating ≥ 4 but the model predicted ≤ 2?"*
+   - *"Which field team had the most disagreements with the model this season?"*
+   - *"Show me all trays where the field notes mention camera or lighting issues."*
+   What components does it need? Where does an LLM fit in, and where does it not?
+
+3. **Risk** — What is the most likely way this system gives a researcher a
+   wrong answer without them realising it? How would you detect and prevent that?
+
+---
+
+## Q7 — LLM-Assisted Lab Query System
+
+The lab accumulates data every growing season: tray photos, per-bean CNN
+scores, human ratings, segmentation outputs, and field notes written by the
+field team (free text, e.g. *"camera was misaligned on rows 3–5"*,
+*"new variety introduced mid-season"*).
+
+A researcher wants to query this data in plain English without writing SQL.
+Examples:
+- *"Which trays from 2024 had a human rating ≥ 4 but the model predicted ≤ 2?"*
+- *"Which field team had the most disagreements with the model this season?"*
+- *"Show me all trays where the field notes mention camera or lighting issues."*
+
+Using the existing data files in this repo (`data/ratings.csv` and
+`data/sample_beans/`) as your starting point:
+
+1. **Schema** — Design the database schema that would store all of the above
+   (tray metadata, per-bean scores, human ratings, field notes). Specify table
+   names, columns, and data types. Justify any indexing decisions.
+
+2. **Query pipeline** — Describe how you would build a system that takes a
+   plain-English question from a researcher and returns the correct rows.
+   What components does it need? Where does an LLM fit in, and where does it not?
+
+3. **Risk** — What is the most likely way this system gives a researcher a
+   wrong answer without them realising it? How would you detect and prevent that?
